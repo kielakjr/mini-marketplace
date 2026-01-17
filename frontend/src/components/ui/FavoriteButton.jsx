@@ -16,7 +16,7 @@ const FavoriteButton = ({ isFavorite: initialFavorite = false, onToggle }) => {
   return (
     <button
       onClick={handleClick}
-      className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-200 flex items-center justify-center"
+      className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-200 flex items-center justify-center cursor-pointer"
       aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
     >
       {isFavorite ? (

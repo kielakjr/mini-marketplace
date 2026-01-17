@@ -1,31 +1,28 @@
 import React from 'react'
 import Tile from './ui/Tile'
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
+import LoginButton from './ui/LoginButton';
+import Input from './ui/Input';
+import { useSelector } from 'react-redux';
 
 const MainNavigation = () => {
+  const auth = useSelector((state) => state.auth);
   return (
     <Tile className="
       flex items-center justify-between
     ">
       <NavLink to="/" className="font-semibold text-lg">Mini Marketplace</NavLink>
-      <input
+      <Input
         type="search"
         placeholder="Search products..."
-        className="
-          px-3 py-1.5 rounded-md
-          bg-white/30 text-white placeholder-white/70
-          outline-none
-          focus:ring-2 focus:ring-white/50
-          border border-white/20
-          backdrop-blur-md
-          shadow-[0_4px_15px_rgb(0,0,0,0.1)]
-          transition-all duration-200
-          w-96
-        "
       />
-      <div>
+      <div className="flex items-center gap-4">
         <p>Cart (0)</p>
-        <p>Login</p>
+        {!auth.user ? (
+          <Link to="/login"><LoginButton /></Link>
+        ) : (
+          <p>Welcome, {auth.user.name}</p>
+        )}
       </div>
     </Tile>
   )

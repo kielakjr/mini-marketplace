@@ -1,13 +1,13 @@
 import React from 'react'
 import Button from './Button'
 
-const AddToCartButtton = ({...props}) => {
+const LoginButton = ({...props}) => {
   return (
     <Button
       {...props}>
-      Add to Cart
+      Login
     </Button>
   )
 }
 
-export default AddToCartButtton
+export default LoginButton

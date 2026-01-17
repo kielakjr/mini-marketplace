@@ -6,15 +6,12 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    host: true,
-    port: 5173,
     proxy: {
       '/api': {
-        target: 'http://api:3000',
+        target: 'http://api:3000', // Nazwa serwisu z docker-compose
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        rewrite: (path) => path.replace(/^\/api/, ''), // Usuwa '/api' przed wysłaniem do backendu
       },
     },
   },
-
 })

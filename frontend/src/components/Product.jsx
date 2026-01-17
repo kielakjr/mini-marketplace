@@ -1,6 +1,6 @@
 import React from 'react'
 import Tile from './ui/Tile'
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import AddToCartButtton from './ui/AddToCartButtton';
 import FavoriteButton from './ui/FavoriteButton';
 
@@ -15,7 +15,7 @@ const Product = ({ product }) => {
 
 
   return (
-    <NavLink to={`/products/${product.id}`}>
+    <Link to={`/products/${product.id}`}>
       <Tile className="mx-auto p-4 transition-transform duration-300 hover:scale-108 cursor-pointer">
         <h2 className="font-semibold text-xl mb-2">{title}</h2>
         <img src={images && images.length > 0 ? images[0].url : ''} alt={title} className="w-full h-48 object-cover mb-4 rounded-md" />
@@ -28,7 +28,7 @@ const Product = ({ product }) => {
           </div>
         </div>
       </Tile>
-    </NavLink>
+    </Link>
   )
 }
 
