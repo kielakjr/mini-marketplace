@@ -56,8 +56,6 @@ router.post('/register', async (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
-  console.log('JWT SECRET (LOGIN):', process.env.JWT_SECRET)
-
   const { email, password } = req.body
 
   try {

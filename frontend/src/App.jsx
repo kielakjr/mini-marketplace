@@ -9,6 +9,7 @@ import Home, { loader as productsloader} from './pages/Home';
 import ProductDetail, { loader as productDetailLoader } from './pages/ProductDetail';
 import Login, {action as loginAction} from './pages/Login';
 import Register, {action as registerAction} from './pages/Register';
+import Profile from './pages/Profile';
 
 const router = createBrowserRouter([
   {
@@ -24,7 +25,8 @@ const router = createBrowserRouter([
         ]
       },
       { path: "/login", element: <Login />, action: loginAction },
-      { path: "/register", element: <Register />, action: registerAction }
+      { path: "/register", element: <Register />, action: registerAction },
+      { path: "/profile", element: <Profile /> }
     ]
   }
 ])

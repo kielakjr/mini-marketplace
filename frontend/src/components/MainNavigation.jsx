@@ -21,7 +21,11 @@ const MainNavigation = () => {
         {!auth.user ? (
           <Link to="/login"><LoginButton /></Link>
         ) : (
-          <p>Welcome, {auth.user.name}</p>
+          <NavLink to="/profile" className="flex items-center">
+          <div className="w-10 h-10 bg-white text-gray-900 rounded-full flex items-center justify-center font-bold">
+            {auth.user.name ? auth.user.name[0].toUpperCase() : 'U'}
+          </div>
+        </NavLink>
         )}
       </div>
     </Tile>

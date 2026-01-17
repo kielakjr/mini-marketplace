@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken'
 const JWT_SECRET = process.env.JWT_SECRET
 
 export function authMiddleware(req, res, next) {
-  console.log('JWT SECRET (LOGIN):', process.env.JWT_SECRET)
   const authHeader = req.headers.authorization
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
