@@ -21,12 +21,20 @@ services:
     environment:
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_NAME: sklep
+      DB_NAME: mini-marketplace
       DB_USER: postgres
       DB_PASSWORD: postgres
       PORT: 3000
     ports:
       - "3000:3000"
+
+  frontend:
+    build: ./frontend
+    container_name: mini-marketplace-frontend
+    depends_on:
+      - api
+    ports:
+      - "5173:5173"
 
 volumes:
   pgdata:
