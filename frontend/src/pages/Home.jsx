@@ -1,41 +1,31 @@
-import { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import { getAllProducts } from '../api/products'
-import { setProducts } from '../store/products-slice.js'
+import { useLoaderData, Await } from 'react-router-dom'
+import { Suspense } from 'react'
+import Product from '../components/Product'
 
-const Home = () => {
-  const products = useSelector((state) => state.products.items)
-  const dispatch = useDispatch()
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const data = await getAllProducts()
-        dispatch(setProducts(data))
-      } catch (err) {
-        setError('Could not fetch products. Please try again later.')
-      }
-    }
-    fetchProducts()
-  }, [dispatch])
+export default function Home() {
+  const { products } = useLoaderData()
 
   return (
-    <>
-      {error && <div className="">{error}</div>}
-      {!error && (
-        <div className="">
-          {products.map((product) => (
-            <div key={product.id} className="">
-              <h2>{product.title}</h2>
-              <p>{product.description}</p>
-              <span>Price: ${product.price}</span>
+    <div>
+      <h1>Produkty</h1>
+      <Suspense fallback={<div>Loading products...</div>}>
+        <Await resolve={products} errorElement={<div>Couldn't load products.</div>}>
+          {(resolvedProducts) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+              {resolvedProducts.map((product) => (
+                <Product key={product.id} product={product} />
+              ))}
             </div>
-          ))}
-        </div>
-      )}
-    </>
+          )}
+        </Await>
+      </Suspense>
+    </div>
   )
 }
 
-export default Home
+export async function loader() {
+  return {
+    products: getAllProducts()
+  }
+}

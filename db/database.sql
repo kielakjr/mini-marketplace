@@ -288,6 +288,20 @@ INSERT INTO "Shipment" (id, "orderId", carrier, "trackingNumber", status) VALUES
 INSERT INTO "Address" (id, "userId", line1, city, zip, country) VALUES
 ('a1', 'u2', 'Ul. Długa 1', 'Warszawa', '00-001', 'Polska');
 
+INSERT INTO "ProductImage" (id, url, "productId") VALUES
+-- MacBook Pro (p1)
+('img1', 'https://picsum.photos/id/180/400/300', 'p1'),
+('img2', 'https://picsum.photos/id/181/400/300', 'p1'),
+
+-- iPhone 15 (p2)
+('img3', 'https://picsum.photos/id/250/400/300', 'p2'),
+('img4', 'https://picsum.photos/id/251/400/300', 'p2'),
+
+-- T-shirt Biały (p3)
+('img5', 'https://picsum.photos/id/310/400/300', 'p3'),
+('img6', 'https://picsum.photos/id/311/400/300', 'p3');
+
+
 
 -- SELECT u.name, o.id as order_id, p.title, oi.quantity, oi."unitPrice"
 -- FROM "User" u

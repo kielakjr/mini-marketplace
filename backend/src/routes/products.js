@@ -4,9 +4,22 @@ import { pool } from '../db/index.js';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const { rows } = await pool.query(`SELECT * FROM "Product"`);
-  res.json(rows);
-});
+  try {
+    const { rows } = await pool.query(`
+      SELECT
+        p.*,
+        COALESCE(json_agg(pi.*) FILTER (WHERE pi.id IS NOT NULL), '[]') AS images
+      FROM "Product" p
+      LEFT JOIN "ProductImage" pi ON p.id = pi."productId"
+      GROUP BY p.id
+    `)
+    res.json(rows)
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Nie udało się pobrać produktów' })
+  }
+})
+
 
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
