@@ -1,4 +1,4 @@
-const API_URL = 'http://mini-marketplace-api:3000';
+const API_URL = '/api';
 
 export const getAllProducts = async () => {
   const res = await fetch(`${API_URL}/products`);
