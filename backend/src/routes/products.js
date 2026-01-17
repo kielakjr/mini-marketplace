@@ -22,13 +22,29 @@ router.get('/', async (req, res) => {
 
 
 router.get('/:id', async (req, res) => {
-  const { id } = req.params;
-  const { rows } = await pool.query(`SELECT * FROM "Product" WHERE id = $1`, [id]);
-  if (rows.length === 0) {
-    return res.status(404).json({ message: 'Product not found' });
+  try {
+    const { id } = req.params
+    const { rows } = await pool.query(`
+      SELECT
+        p.*,
+        COALESCE(json_agg(pi.*) FILTER (WHERE pi.id IS NOT NULL), '[]') AS images
+      FROM "Product" p
+      LEFT JOIN "ProductImage" pi ON p.id = pi."productId"
+      WHERE p.id = $1
+      GROUP BY p.id
+    `, [id])
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Product not found' })
+    }
+
+    res.json(rows[0])
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Nie udało się pobrać produktu' })
   }
-  res.json(rows[0]);
-});
+})
+
 
 router.post('/', async (req, res) => {
   try {
