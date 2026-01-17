@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 import { pool } from '../db/index.js'
 import { v4 as uuidv4 } from 'uuid'
 import jwt from 'jsonwebtoken';
+import { authMiddleware } from '../utlis/auth.middleware.js'
 
 const router = express.Router()
 
@@ -37,7 +38,7 @@ router.post('/register', async (req, res) => {
         email: email,
       },
       process.env.JWT_SECRET || 'dev_secret',
-      { expiresIn: '1h' }
+      { expiresIn: '7d' }
     )
 
     res.json({
@@ -55,6 +56,8 @@ router.post('/register', async (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
+  console.log('JWT SECRET (LOGIN):', process.env.JWT_SECRET)
+
   const { email, password } = req.body
 
   try {
@@ -82,7 +85,7 @@ router.post('/login', async (req, res) => {
         email: user.email,
       },
       process.env.JWT_SECRET || 'dev_secret',
-      { expiresIn: '1h' }
+      { expiresIn: '7d' }
     )
 
     res.json({
@@ -97,6 +100,15 @@ router.post('/login', async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
+})
+
+router.get('/me', authMiddleware, async (req, res) => {
+  const result = await pool.query(
+    'SELECT id, email, name, role FROM "User" WHERE id = $1',
+    [req.user.id]
+  )
+
+  res.json(result.rows[0])
 })
 
 

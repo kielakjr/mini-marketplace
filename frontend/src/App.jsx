@@ -1,6 +1,8 @@
 import React from 'react'
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+import { login } from './store/auth-slice';
 
 import Root from './pages/Root';
 import Home, { loader as productsloader} from './pages/Home';
@@ -28,6 +30,38 @@ const router = createBrowserRouter([
 ])
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const res = await fetch('/api/auth/me', {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          if (res.ok) {
+            const user = await res.json();
+            dispatch(login({
+              id: user.id,
+              user: user,
+              email: user.email,
+              role: user.role
+            }));
+          } else {
+            localStorage.removeItem('token');
+          }
+        } catch (error) {
+          localStorage.removeItem('token');
+        }
+      }
+    };
+
+    fetchUser();
+  }, [dispatch]);
+
   return (
     <RouterProvider router={router} />
   )

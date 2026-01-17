@@ -24,6 +24,7 @@ services:
       DB_NAME: mini-marketplace
       DB_USER: postgres
       DB_PASSWORD: postgres
+      JWT_SECRET: super-secret-key-123
       PORT: 3000
     ports:
       - "3000:3000"
