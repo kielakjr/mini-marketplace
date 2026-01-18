@@ -2,8 +2,10 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCart, removeFromCart, updateCartQuantity } from '../api/cart'
 import { setCart, removeItem, updateQuantity} from '../store/cart-slice'
+import { Link } from 'react-router-dom'
 import Tile from '../components/ui/Tile'
 import Line from '../components/ui/Line'
+import Button from '../components/ui/Button'
 
 const CartPage = () => {
   const dispatch = useDispatch()
@@ -62,7 +64,10 @@ const CartPage = () => {
         <Line />
         </div>
       ))}
-      <h2>Total: {total}$</h2>
+      <div className="flex flex-col gap-6 text-right mt-4">
+        <h2>Total: {total}$</h2>
+        <Link to="/checkout"><Button>Proceed to Checkout</Button></Link>
+      </div>
     </Tile>
   )
 }

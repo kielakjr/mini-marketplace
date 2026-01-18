@@ -1,7 +1,9 @@
+import { getToken } from './auth.js'
+
 export async function getCart() {
   const res = await fetch('/api/cart', {
     headers: {
-      Authorization: 'Bearer ' + localStorage.getItem('token'),
+      Authorization: 'Bearer ' + await getToken(),
     },
   })
   if (!res.ok) throw new Error('Could not fetch cart')
@@ -13,7 +15,7 @@ export async function addToCart(productId, quantity = 1) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + localStorage.getItem('token'),
+      Authorization: 'Bearer ' + await getToken(),
     },
     body: JSON.stringify({ productId, quantity }),
   })
@@ -24,7 +26,7 @@ export async function addToCart(productId, quantity = 1) {
 export async function removeFromCart(cartItemId) {
   const res = await fetch(`/api/cart/${cartItemId}`, {
     method: 'DELETE',
-    headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
+    headers: { Authorization: 'Bearer ' + await getToken() },
   })
   if (!res.ok) throw new Error('Could not remove from cart')
   return res.json()
@@ -35,7 +37,7 @@ export async function updateCartQuantity(cartItemId, quantity) {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + localStorage.getItem('token'),
+      Authorization: 'Bearer ' + await getToken(),
     },
     body: JSON.stringify({ quantity }),
   })

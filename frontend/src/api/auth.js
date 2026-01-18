@@ -21,3 +21,7 @@ export const registerUser = async ({ email, password, name }) => {
   if (!res.ok) throw new Error('Registration failed')
   return res.json()
 }
+
+export const getToken = async () => {
+  return localStorage.getItem('token')
+}

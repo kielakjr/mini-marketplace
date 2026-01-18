@@ -13,6 +13,7 @@ import Login, {action as loginAction} from './pages/Login';
 import Register, {action as registerAction} from './pages/Register';
 import Profile from './pages/Profile';
 import Cart from './pages/Cart';
+import Checkout, {action as checkoutAction} from './pages/Checkout';
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,8 @@ const router = createBrowserRouter([
       { path: "/login", element: <Login />, action: loginAction },
       { path: "/register", element: <Register />, action: registerAction },
       { path: "/profile", element: <Profile /> },
-      { path: "/cart", element: <Cart /> }
+      { path: "/cart", element: <Cart /> },
+      { path: "/checkout", element: <Checkout /> , action: checkoutAction }
     ]
   }
 ])

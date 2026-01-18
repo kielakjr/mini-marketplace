@@ -1,17 +1,13 @@
 import express from 'express';
 import { pool } from '../db/index.js';
 import { authenticate } from '../middleware/auth.js';
+import { getCartItems } from '../services/cart-services.js';
 
 const router = express.Router();
 
 router.get('/', authenticate, async (req, res) => {
   try {
-    const { rows } = await pool.query(`
-      SELECT ci.id, ci.quantity, p.id as product_id, p.title, p.price
-      FROM "CartItem" ci
-      JOIN "Product" p ON ci."productId" = p.id
-      WHERE ci."userId" = $1
-    `, [req.user.id]);
+    const rows = await getCartItems(req.user.id);
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
