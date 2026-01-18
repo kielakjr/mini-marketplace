@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import { login, load } from './store/auth-slice';
 import { setCart } from './store/cart-slice';
 import { getCart } from './api/cart';
+import { setFavorites } from './store/favorites-slice';
+import { fetchFavorites } from './api/favorites';
 import ProtectedUserRoute from './components/ProtectedUserRoute';
 
 import Root from './pages/Root';
@@ -17,6 +19,7 @@ import Profile from './pages/Profile';
 import Cart from './pages/Cart';
 import Checkout, {action as checkoutAction} from './pages/Checkout';
 import ProfileOrders, {loader as profileOrdersLoader} from './pages/ProfileOrders';
+import Favorites, {loader as favoritesLoader} from './pages/Favorites';
 
 const router = createBrowserRouter([
   {
@@ -37,11 +40,13 @@ const router = createBrowserRouter([
       { path: "/profile",
         element: <ProtectedUserRoute><Profile /></ProtectedUserRoute>,
         children: [
-          { path: "orders", element: <ProfileOrders />, loader: profileOrdersLoader }
+          { path: "orders", element: <ProfileOrders />, loader: profileOrdersLoader },
+          { path: "favorites", element: <Favorites />, loader: favoritesLoader }
         ]
       },
       { path: "/cart", element: <Cart /> },
-      { path: "/checkout", element: <ProtectedUserRoute><Checkout /></ProtectedUserRoute>, action: checkoutAction }
+      { path: "/checkout", element: <ProtectedUserRoute><Checkout /></ProtectedUserRoute>, action: checkoutAction },
+      { path: "/favorites", element: <ProtectedUserRoute><Favorites /></ProtectedUserRoute>, loader: favoritesLoader }
     ]
   }
 ])
@@ -91,6 +96,19 @@ const App = () => {
     };
 
     loadCart();
+  }, [dispatch]);
+
+  React.useEffect(() => {
+    const loadFavorites = async () => {
+      try {
+        const favoritesData = await fetchFavorites();
+        dispatch(setFavorites(favoritesData));
+      } catch (error) {
+        console.error('Failed to load favorites:', error);
+      }
+    };
+
+    loadFavorites();
   }, [dispatch]);
 
   return (

@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { addItem } from '../store/cart-slice';
 import { addToCart } from '../api/cart';
 
-const Product = ({ product }) => {
+const Product = ({ product, id }) => {
   const dispatch = useDispatch();
   const [adding, setAdding] = React.useState(false);
 
@@ -27,7 +27,7 @@ const Product = ({ product }) => {
 
 
   return (
-    <Link to={`/products/${product.id}`}>
+    <Link to={`/products/${id}`}>
       <Tile className="mx-auto p-4 transition-transform duration-300 hover:scale-108 cursor-pointer">
         <h2 className="font-semibold text-xl mb-2">{title}</h2>
         <img src={images && images.length > 0 ? images[0].url : ''} alt={title} className="w-full h-48 object-cover mb-4 rounded-md" />
@@ -35,7 +35,7 @@ const Product = ({ product }) => {
         <div className="flex items-center justify-between">
           <span className="font-bold text-lg">${price}</span>
           <div className="flex gap-3">
-            <FavoriteButton />
+            <FavoriteButton productId={id}/>
             <AddToCartButtton onClick={handleAddToCart} disabled={adding} />
           </div>
         </div>

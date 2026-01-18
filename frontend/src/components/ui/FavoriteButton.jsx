@@ -1,16 +1,28 @@
 import React, { useState } from 'react'
 import { HeartIcon as HeartOutline } from '@heroicons/react/24/outline'
 import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid'
+import { addFavorite, removeFavorite } from '../../api/favorites'
+import { useSelector, useDispatch } from 'react-redux';
+import { addFavorite as addFavoriteAction, removeFavorite as removeFavoriteAction } from '../../store/favorites-slice';
 
-const FavoriteButton = ({ isFavorite: initialFavorite = false, onToggle }) => {
-  const [isFavorite, setIsFavorite] = useState(initialFavorite)
+const FavoriteButton = ({ productId }) => {
+  const dispatch = useDispatch();
+  const favorites = useSelector(state => state.favorites.items);
+  const isFav = favorites.find(fav => fav.productId === productId) ? true : false;
+  const [isFavorite, setIsFavorite] = useState(isFav);
 
   const handleClick = (e) => {
     e.preventDefault()
     e.stopPropagation()
     const newState = !isFavorite
+    if (newState) {
+      addFavorite(productId);
+      dispatch(addFavoriteAction({ productId }));
+    } else {
+      removeFavorite(productId);
+      dispatch(removeFavoriteAction(productId));
+    }
     setIsFavorite(newState)
-    if (onToggle) onToggle(newState)
   }
 
   return (

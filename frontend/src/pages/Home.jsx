@@ -14,7 +14,7 @@ export default function Home() {
           {(resolvedProducts) => (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
               {resolvedProducts.map((product) => (
-                <Product key={product.id} product={product} />
+                <Product key={product.id} product={product} id={product.id} />
               ))}
             </div>
           )}

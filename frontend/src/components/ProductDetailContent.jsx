@@ -86,7 +86,7 @@ const ProductDetailContent = ({ product }) => {
       <div className="flex w-full justify-between items-center mt-2">
         <p className="text-left px-5">Added at {new Date(createdAt).toLocaleDateString()}</p>
         <div className="flex gap-4 mr-5">
-          <FavoriteButton />
+          <FavoriteButton productId={id}/>
           <AddToCartButtton onClick={handleAddToCart} disabled={adding} />
         </div>
       </div>

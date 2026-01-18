@@ -12,7 +12,10 @@ const MainNavigation = () => {
     <Tile className="
       flex items-center justify-between
     ">
-      <NavLink to="/" className="font-semibold text-lg">Mini Marketplace</NavLink>
+      <div className="flex items-center gap-6">
+        <NavLink to="/" className="font-semibold text-lg">Mini Marketplace</NavLink>
+        {auth.user && (<NavLink to="/favorites" className={({isActive}) => isActive ? "text-gray-300 italic" : ""}>Favorites</NavLink>)}
+      </div>
       <Input
         type="search"
         placeholder="Search products..."
