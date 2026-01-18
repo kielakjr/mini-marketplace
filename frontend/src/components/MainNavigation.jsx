@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 const MainNavigation = () => {
   const auth = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
+
   return (
     <Tile className="
       flex items-center justify-between
@@ -16,11 +17,14 @@ const MainNavigation = () => {
         <NavLink to="/" className="font-semibold text-lg">Mini Marketplace</NavLink>
         {auth.user && (<NavLink to="/products/new" className={({isActive}) => isActive ? "text-gray-300 italic" : ""}>Add Product</NavLink>)}
         {auth.user && (<NavLink to="/favorites" className={({isActive}) => isActive ? "text-gray-300 italic" : ""}>Favorites</NavLink>)}
+        {auth.user && auth.user.role === 'ADMIN' && (<NavLink to="/admin" className={({isActive}) => isActive ? "text-gray-300 italic" : ""}>Admin Panel</NavLink>)}
       </div>
-      <Input
-        type="search"
-        placeholder="Search products..."
-      />
+      <div className="flex-1 mx-6 self-center">
+        <Input
+          type="search"
+          placeholder="Search products..."
+        />
+      </div>
       <div className="flex items-center gap-4">
         <NavLink to="/cart" className="relative">Cart ({cart.items.length})</NavLink>
         {!auth.user ? (

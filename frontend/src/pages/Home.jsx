@@ -1,10 +1,23 @@
 import { getAllProducts } from '../api/products'
 import { useLoaderData, Await } from 'react-router-dom'
-import { Suspense } from 'react'
+import { Suspense, useEffect } from 'react'
 import Product from '../components/Product'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { setProducts } from '../store/products-slice'
 
 export default function Home() {
   const { products } = useLoaderData()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      const resolvedProducts = await products;
+      dispatch(setProducts(resolvedProducts));
+    }
+    loadProducts();
+  }, [products, dispatch]);
+
 
   return (
     <div>

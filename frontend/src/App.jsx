@@ -11,12 +11,13 @@ import { fetchFavorites } from './api/favorites';
 import { fetchCategories } from './api/categories';
 import { setCategories } from './store/products-slice';
 import ProtectedUserRoute from './components/ProtectedUserRoute';
+import ProtectedAdminRoute from './components/ProtectedAdminRoute';
 
 import Root from './pages/Root';
 import Error from './pages/Error';
-import Home, { loader as productsloader} from './pages/Home';
+import Home, { loader, loader as productsloader} from './pages/Home';
 import ProductDetail, { loader as productDetailLoader } from './pages/ProductDetail';
-import Login, {action, action as loginAction} from './pages/Login';
+import Login, { action as loginAction} from './pages/Login';
 import Register, {action as registerAction} from './pages/Register';
 import Profile from './pages/Profile';
 import Cart from './pages/Cart';
@@ -25,6 +26,15 @@ import ProfileOrders, {loader as profileOrdersLoader} from './pages/ProfileOrder
 import Favorites, {loader as favoritesLoader} from './pages/Favorites';
 import AddProduct, {action as addProductAction} from './pages/AddProduct';
 import MyProducts, {loader as myProductsLoader} from './pages/MyProducts';
+import AdminPanel from './pages/AdminPanel';
+
+import AdminProducts, {loader as adminProductsLoader} from './pages/admin/AdminProducts';
+import AdminUsers, {loader as adminUsersLoader} from './pages/admin/AdminUsers';
+import AdminCategories, {loader as adminCategoriesLoader} from './pages/admin/AdminCategories';
+import AdminOrders, {loader as adminOrdersLoader} from './pages/admin/AdminOrders';
+import AdminPayments, {loader as adminPaymentsLoader} from './pages/admin/AdminPayments';
+import AdminShipments, {loader as adminShipmentsLoader} from './pages/admin/AdminShipments';
+import AdminLogs, {loader as logsLoader} from './pages/admin/AdminLogs';
 
 const router = createBrowserRouter([
   {
@@ -55,7 +65,20 @@ const router = createBrowserRouter([
       },
       { path: "/cart", element: <Cart /> },
       { path: "/checkout", element: <ProtectedUserRoute><Checkout /></ProtectedUserRoute>, action: checkoutAction },
-      { path: "/favorites", element: <ProtectedUserRoute><Favorites /></ProtectedUserRoute>, loader: favoritesLoader }
+      { path: "/favorites", element: <ProtectedUserRoute><Favorites /></ProtectedUserRoute>, loader: favoritesLoader },
+      { path: "/admin",
+        element: <ProtectedAdminRoute><AdminPanel /></ProtectedAdminRoute>,
+        children: [
+          { index: true, element: <AdminUsers />, loader: adminUsersLoader },
+          { path: "users", element: <AdminUsers />, loader: adminUsersLoader },
+          { path: "categories", element: <AdminCategories />, loader: adminCategoriesLoader },
+          { path: "orders", element: <AdminOrders />, loader: adminOrdersLoader },
+          { path: "payments", element: <AdminPayments />, loader: adminPaymentsLoader },
+          { path: "shipments", element: <AdminShipments />, loader: adminShipmentsLoader },
+          { path: "logs", element: <AdminLogs />, loader: logsLoader },
+          { path: "products", element: <AdminProducts />, loader: adminProductsLoader }
+        ]
+      }
     ]
   }
 ])

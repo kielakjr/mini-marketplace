@@ -250,9 +250,9 @@ EXECUTE FUNCTION prevent_negative_price();
 
 
 INSERT INTO "User" (id, email, "passwordHash", name, role) VALUES
-('u1', 'admin@sklep.pl', 'hash123', 'Admin Adam', 'ADMIN'),
-('u2', 'klient@gmail.com', 'hash456', 'Jan Kowalski', 'USER'),
-('u3', 'anna@wp.pl', 'hash789', 'Anna Nowak', 'USER');
+('u1', 'admin@sklep.pl', '$2b$10$qm/5Zgw38lsvcVkiwKfVNe02/XK/6Zoxc/Z/dKKZYUkU5ecswY1mq', 'Admin Adam', 'ADMIN'),
+('u2', 'klient@gmail.com', '$2b$10$qm/5Zgw38lsvcVkiwKfVNe02/XK/6Zoxc/Z/dKKZYUkU5ecswY1mq', 'Jan Kowalski', 'USER'),
+('u3', 'anna@wp.pl', '$2b$10$qm/5Zgw38lsvcVkiwKfVNe02/XK/6Zoxc/Z/dKKZYUkU5ecswY1mq', 'Anna Nowak', 'USER');
 
 INSERT INTO "Category" (id, name, "parentId") VALUES
 ('c1', 'Elektronika', NULL),
