@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs'
 import { pool } from '../db/index.js'
 import { v4 as uuidv4 } from 'uuid'
 import jwt from 'jsonwebtoken';
-import { authMiddleware } from '../utlis/auth.middleware.js'
+import { authenticate } from '../middleware/auth.js'
 
 const router = express.Router()
 
@@ -100,7 +100,7 @@ router.post('/login', async (req, res) => {
   }
 })
 
-router.get('/me', authMiddleware, async (req, res) => {
+router.get('/me', authenticate, async (req, res) => {
   const result = await pool.query(
     'SELECT id, email, name, role FROM "User" WHERE id = $1',
     [req.user.id]

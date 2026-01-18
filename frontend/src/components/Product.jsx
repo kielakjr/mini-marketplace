@@ -3,14 +3,26 @@ import Tile from './ui/Tile'
 import { Link } from 'react-router-dom';
 import AddToCartButtton from './ui/AddToCartButtton';
 import FavoriteButton from './ui/FavoriteButton';
+import { useDispatch } from 'react-redux';
+import { addItem } from '../store/cart-slice';
+import { addToCart } from '../api/cart';
 
 const Product = ({ product }) => {
+  const dispatch = useDispatch();
+  const [adding, setAdding] = React.useState(false);
 
   const { title, description, price, images } = product
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = async (e) => {
     e.preventDefault();
     e.stopPropagation();
+    setAdding(true);
+    await addToCart(product.id);
+    setAdding(false);
+    dispatch(addItem({
+      ...product,
+      quantity: 1
+    }));
   }
 
 
@@ -24,7 +36,7 @@ const Product = ({ product }) => {
           <span className="font-bold text-lg">${price}</span>
           <div className="flex gap-3">
             <FavoriteButton />
-            <AddToCartButtton onClick={handleAddToCart} />
+            <AddToCartButtton onClick={handleAddToCart} disabled={adding} />
           </div>
         </div>
       </Tile>

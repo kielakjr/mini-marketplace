@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 
 const MainNavigation = () => {
   const auth = useSelector((state) => state.auth);
+  const cart = useSelector((state) => state.cart);
   return (
     <Tile className="
       flex items-center justify-between
@@ -17,7 +18,7 @@ const MainNavigation = () => {
         placeholder="Search products..."
       />
       <div className="flex items-center gap-4">
-        <p>Cart (0)</p>
+        <NavLink to="/cart" className="relative">Cart ({cart.items.length})</NavLink>
         {!auth.user ? (
           <Link to="/login"><LoginButton /></Link>
         ) : (

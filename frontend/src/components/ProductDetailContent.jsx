@@ -4,10 +4,15 @@ import Tile from './ui/Tile'
 import Line from './ui/Line'
 import AddToCartButtton from './ui/AddToCartButtton'
 import FavoriteButton from './ui/FavoriteButton'
+import { useDispatch } from 'react-redux'
+import { addItem } from '../store/cart-slice'
+import { addToCart } from '../api/cart'
 
 const ProductDetailContent = ({ product }) => {
-  const { title, description, price, images, createdAt } = product;
+  const { id, title, description, price, images, createdAt } = product;
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [adding, setAdding] = useState(false)
+  const dispatch = useDispatch()
 
   const handleNextImage = (e) => {
     e.stopPropagation()
@@ -19,6 +24,20 @@ const ProductDetailContent = ({ product }) => {
     e.stopPropagation()
     e.preventDefault()
     setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length)
+  }
+
+  const handleAddToCart = async () => {
+    try {
+      setAdding(true)
+      const addedItem = await addToCart(product.id)
+      setAdding(false)
+      dispatch(addItem({
+        ...product,
+        quantity: 1
+      }))
+    } catch (err) {
+      console.error('Failed to add item to cart:', err)
+    }
   }
 
 
@@ -68,7 +87,7 @@ const ProductDetailContent = ({ product }) => {
         <p className="text-left px-5">Added at {new Date(createdAt).toLocaleDateString()}</p>
         <div className="flex gap-4 mr-5">
           <FavoriteButton />
-          <AddToCartButtton />
+          <AddToCartButtton onClick={handleAddToCart} disabled={adding} />
         </div>
       </div>
     </Tile>

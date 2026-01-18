@@ -3,6 +3,8 @@ import { createBrowserRouter } from "react-router";
 import { RouterProvider } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { login } from './store/auth-slice';
+import { setCart } from './store/cart-slice';
+import { getCart } from './api/cart';
 
 import Root from './pages/Root';
 import Home, { loader as productsloader} from './pages/Home';
@@ -10,6 +12,7 @@ import ProductDetail, { loader as productDetailLoader } from './pages/ProductDet
 import Login, {action as loginAction} from './pages/Login';
 import Register, {action as registerAction} from './pages/Register';
 import Profile from './pages/Profile';
+import Cart from './pages/Cart';
 
 const router = createBrowserRouter([
   {
@@ -26,7 +29,8 @@ const router = createBrowserRouter([
       },
       { path: "/login", element: <Login />, action: loginAction },
       { path: "/register", element: <Register />, action: registerAction },
-      { path: "/profile", element: <Profile /> }
+      { path: "/profile", element: <Profile /> },
+      { path: "/cart", element: <Cart /> }
     ]
   }
 ])
@@ -62,6 +66,19 @@ const App = () => {
     };
 
     fetchUser();
+  }, [dispatch]);
+
+  React.useEffect(() => {
+    const loadCart = async () => {
+      try {
+        const cartData = await getCart();
+        dispatch(setCart(cartData));
+      } catch (error) {
+        console.error('Failed to load cart:', error);
+      }
+    };
+
+    loadCart();
   }, [dispatch]);
 
   return (
