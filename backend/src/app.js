@@ -5,6 +5,7 @@ import cartRouter from './routes/cart.js';
 import checkoutRouter from './routes/checkout.js';
 import ordersRouter from './routes/orders.js';
 import favoritesRouter from './routes/favorites.js';
+import categoriesRouter from './routes/categories.js';
 
 const app = express();
 app.use(express.json());
@@ -16,6 +17,7 @@ app.use('/cart', cartRouter);
 app.use('/checkout', checkoutRouter);
 app.use('/orders', ordersRouter);
 app.use('/favorites', favoritesRouter);
+app.use('/categories', categoriesRouter);
 
 app.listen(process.env.PORT, () => {
   console.log('API uruchomione');

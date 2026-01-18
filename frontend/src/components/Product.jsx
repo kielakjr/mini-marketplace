@@ -6,9 +6,11 @@ import FavoriteButton from './ui/FavoriteButton';
 import { useDispatch } from 'react-redux';
 import { addItem } from '../store/cart-slice';
 import { addToCart } from '../api/cart';
+import { useSelector } from 'react-redux';
 
 const Product = ({ product, id }) => {
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const [adding, setAdding] = React.useState(false);
 
   const { title, description, price, images } = product
@@ -16,6 +18,10 @@ const Product = ({ product, id }) => {
   const handleAddToCart = async (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (!isLoggedIn) {
+      alert('Please log in to add items to your cart.');
+      return;
+    }
     setAdding(true);
     await addToCart(product.id);
     setAdding(false);

@@ -2,24 +2,29 @@ import React from 'react'
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { login, load } from './store/auth-slice';
 import { setCart } from './store/cart-slice';
 import { getCart } from './api/cart';
 import { setFavorites } from './store/favorites-slice';
 import { fetchFavorites } from './api/favorites';
+import { fetchCategories } from './api/categories';
+import { setCategories } from './store/products-slice';
 import ProtectedUserRoute from './components/ProtectedUserRoute';
 
 import Root from './pages/Root';
 import Error from './pages/Error';
 import Home, { loader as productsloader} from './pages/Home';
 import ProductDetail, { loader as productDetailLoader } from './pages/ProductDetail';
-import Login, {action as loginAction} from './pages/Login';
+import Login, {action, action as loginAction} from './pages/Login';
 import Register, {action as registerAction} from './pages/Register';
 import Profile from './pages/Profile';
 import Cart from './pages/Cart';
 import Checkout, {action as checkoutAction} from './pages/Checkout';
 import ProfileOrders, {loader as profileOrdersLoader} from './pages/ProfileOrders';
 import Favorites, {loader as favoritesLoader} from './pages/Favorites';
+import AddProduct, {action as addProductAction} from './pages/AddProduct';
+import MyProducts, {loader as myProductsLoader} from './pages/MyProducts';
 
 const router = createBrowserRouter([
   {
@@ -32,7 +37,9 @@ const router = createBrowserRouter([
         path: "/products",
         children: [
           { index: true, element: <Home />, loader: productsloader },
-          { path: ":productId", element: <ProductDetail />, loader: productDetailLoader }
+          { path: ":productId", element: <ProductDetail />, loader: productDetailLoader },
+          { path: "new", element: <ProtectedUserRoute><AddProduct /></ProtectedUserRoute>, action: addProductAction },
+          { path: "my", element: <ProtectedUserRoute><MyProducts /></ProtectedUserRoute>, loader: myProductsLoader }
         ]
       },
       { path: "/login", element: <Login />, action: loginAction },
@@ -40,8 +47,10 @@ const router = createBrowserRouter([
       { path: "/profile",
         element: <ProtectedUserRoute><Profile /></ProtectedUserRoute>,
         children: [
+          { index: true, element: <MyProducts />, loader: myProductsLoader },
           { path: "orders", element: <ProfileOrders />, loader: profileOrdersLoader },
-          { path: "favorites", element: <Favorites />, loader: favoritesLoader }
+          { path: "favorites", element: <Favorites />, loader: favoritesLoader },
+          { path: "my-products", element: <MyProducts />, loader: myProductsLoader },
         ]
       },
       { path: "/cart", element: <Cart /> },
@@ -53,6 +62,7 @@ const router = createBrowserRouter([
 
 const App = () => {
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   React.useEffect(() => {
     const fetchUser = async () => {
@@ -86,6 +96,7 @@ const App = () => {
   }, [dispatch]);
 
   React.useEffect(() => {
+    if (!isLoggedIn) return;
     const loadCart = async () => {
       try {
         const cartData = await getCart();
@@ -99,6 +110,7 @@ const App = () => {
   }, [dispatch]);
 
   React.useEffect(() => {
+    if (!isLoggedIn) return;
     const loadFavorites = async () => {
       try {
         const favoritesData = await fetchFavorites();
@@ -109,6 +121,19 @@ const App = () => {
     };
 
     loadFavorites();
+  }, [dispatch]);
+
+  React.useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const categoriesData = await fetchCategories();
+        dispatch(setCategories(categoriesData));
+      } catch (error) {
+        console.error('Failed to load categories:', error);
+      }
+    };
+
+    loadCategories();
   }, [dispatch]);
 
   return (

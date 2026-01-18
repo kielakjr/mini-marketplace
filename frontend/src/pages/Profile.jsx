@@ -32,6 +32,7 @@ const Profile = () => {
       </div>
       <Line />
       <div className="my-6 text-2xl flex gap-4">
+        <NavLink to="/profile/my-products" className={({isActive}) => isActive ? "text-gray-300 italic" : ""}>My Products</NavLink>
         <NavLink to="/profile/orders" className={({isActive}) => isActive ? "text-gray-300 italic" : ""}>Orders</NavLink>
         <NavLink to="/profile/favorites" className={({isActive}) => isActive ? "text-gray-300 italic" : ""}>Favorites</NavLink>
       </div>

@@ -5,11 +5,13 @@ import Line from './ui/Line'
 import AddToCartButtton from './ui/AddToCartButtton'
 import FavoriteButton from './ui/FavoriteButton'
 import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { addItem } from '../store/cart-slice'
 import { addToCart } from '../api/cart'
 
 const ProductDetailContent = ({ product }) => {
-  const { id, title, description, price, images, createdAt } = product;
+  const { id, title, description, price, images, createdAt, category } = product;
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [adding, setAdding] = useState(false)
   const dispatch = useDispatch()
@@ -27,6 +29,10 @@ const ProductDetailContent = ({ product }) => {
   }
 
   const handleAddToCart = async () => {
+    if (!isLoggedIn) {
+      alert('Please log in to add items to your cart.');
+      return;
+    }
     try {
       setAdding(true)
       const addedItem = await addToCart(product.id)
@@ -80,7 +86,8 @@ const ProductDetailContent = ({ product }) => {
         <span className="font-bold text-3xl mr-5">${price}</span>
       </div>
       <div className="w-full text-left px-5">
-      <p className="text-white/80 mb-4">{description}</p>
+        <p className="text-white/80 mb-4">Category: {category}</p>
+        <p className="text-white/80 mb-4">{description}</p>
       </div>
       <Line />
       <div className="flex w-full justify-between items-center mt-2">

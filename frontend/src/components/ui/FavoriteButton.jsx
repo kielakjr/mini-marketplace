@@ -7,6 +7,10 @@ import { addFavorite as addFavoriteAction, removeFavorite as removeFavoriteActio
 
 const FavoriteButton = ({ productId }) => {
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  if (!isLoggedIn) {
+    return null;
+  }
   const favorites = useSelector(state => state.favorites.items);
   const isFav = favorites.find(fav => fav.productId === productId) ? true : false;
   const [isFavorite, setIsFavorite] = useState(isFav);

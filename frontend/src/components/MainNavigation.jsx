@@ -14,6 +14,7 @@ const MainNavigation = () => {
     ">
       <div className="flex items-center gap-6">
         <NavLink to="/" className="font-semibold text-lg">Mini Marketplace</NavLink>
+        {auth.user && (<NavLink to="/products/new" className={({isActive}) => isActive ? "text-gray-300 italic" : ""}>Add Product</NavLink>)}
         {auth.user && (<NavLink to="/favorites" className={({isActive}) => isActive ? "text-gray-300 italic" : ""}>Favorites</NavLink>)}
       </div>
       <Input

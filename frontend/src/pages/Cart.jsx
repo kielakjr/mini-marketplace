@@ -10,8 +10,10 @@ import Button from '../components/ui/Button'
 const CartPage = () => {
   const dispatch = useDispatch()
   const cart = useSelector(state => state.cart.items)
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   useEffect(() => {
+    if (!isLoggedIn) return;
     const fetchCart = async () => {
       try {
         const data = await getCart()
