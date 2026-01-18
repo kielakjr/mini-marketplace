@@ -25,3 +25,7 @@ export const registerUser = async ({ email, password, name }) => {
 export const getToken = async () => {
   return localStorage.getItem('token')
 }
+
+export const logoutUser = async () => {
+  localStorage.removeItem('token')
+}

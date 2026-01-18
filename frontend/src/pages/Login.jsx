@@ -21,7 +21,6 @@ const Login = () => {
       localStorage.setItem('token', data.token);
       navigate('/');
     }
-    console.log(data);
   }, [data, dispatch, navigate]);
 
   return (

@@ -5,7 +5,7 @@ const API_URL = '/api/orders';
 export async function getAllOrders() {
   const res = await fetch(API_URL, {
     headers: {
-      Authorization: `Bearer ${getToken()}`,
+      Authorization: `Bearer ${await getToken()}`,
     },
   });
   if (!res.ok) throw new Error('Could not fetch orders');
@@ -15,7 +15,7 @@ export async function getAllOrders() {
 export async function getMyOrders() {
   const res = await fetch(`${API_URL}/my`, {
     headers: {
-      Authorization: `Bearer ${getToken()}`,
+      Authorization: `Bearer ${await getToken()}`,
     },
   });
   if (!res.ok) throw new Error('Could not fetch your orders');
@@ -25,7 +25,7 @@ export async function getMyOrders() {
 export async function getOrder(id) {
   const res = await fetch(`${API_URL}/${id}`, {
     headers: {
-      Authorization: `Bearer ${getToken()}`,
+      Authorization: `Bearer ${await getToken()}`,
     },
   });
   if (!res.ok) throw new Error('Could not fetch order');
